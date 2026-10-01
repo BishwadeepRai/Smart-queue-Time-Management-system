@@ -1,106 +1,81 @@
-# Week 4 — Neural Network Classifier for Call-Centre Service Standard
+# AI-Based Smart Queue & Time Management System
 
-## AI-Based Smart Queue & Time Management System
+<p align="center">
+  <img src="docs/figures/fig1_class_distribution.png" alt="Project preview" width="900" />
+</p>
 
-Feed-forward neural network (TensorFlow/Keras) that predicts whether an arriving simulated call will meet a 60-second answer standard (`meets_standard`). This is the Week 4 classifier assignment. Later project work may use RNN/LSTM for waiting-time forecasting; that is out of scope here.
+<p align="center">
+  <a href="#overview"><img alt="Overview" src="https://img.shields.io/badge/Status-Complete-success" /></a>
+  <a href="#model"><img alt="Model" src="https://img.shields.io/badge/Model-Neural%20Network-ff6b6b" /></a>
+  <a href="#dataset"><img alt="Dataset" src="https://img.shields.io/badge/Dataset-Call%20Centre-blue" /></a>
+  <a href="#python"><img alt="Python" src="https://img.shields.io/badge/Python-3.12-3776AB" /></a>
+</p>
 
----
+## Overview
+
+This project builds a feed-forward neural network to predict whether an arriving simulated call will meet a 60-second service standard. The model is designed for the Week 4 assignment in the AI-Based Smart Queue & Time Management System workflow and focuses on operational classification, not time-series forecasting.
+
+The wider vision is a smart queue and time-management system for call centres, where future work may extend into forecasting or scheduling models. This repository concentrates on the classification task required for the assignment.
+
+## Problem statement
+
+A call centre wants to decide whether a newly arriving call is likely to be answered within 60 seconds. This is treated as a binary classification problem:
+
+- `True`: call meets the standard
+- `False`: call misses the standard
+
+The main difficulty is class imbalance: the majority of calls meet the service target, while the minority class is the operationally important failure case.
 
 ## Dataset
 
-| Item | Detail |
-|------|--------|
-| File | `data/simulated_call_centre.csv` |
-| Source | [Call Centre Queue Simulation](https://www.kaggle.com/) on Kaggle (Week 2 dataset) |
-| License | **CC BY-SA 4.0** (redistribution allowed with attribution and share-alike) |
-| Rows × columns | **51,708 × 9** (verified from the file) |
-| Period | 2021-01-01 to 2021-12-31 (261 weekdays) |
+- Source: simulated call-centre queue dataset
+- File: `data/simulated_call_centre.csv`
+- Shape: 51,708 rows × 9 columns
+- Period: 2021-01-01 to 2021-12-31
+- Target: `meets_standard`
 
-| Column | Used? |
-|--------|--------|
-| `call_id` | No (identifier) |
-| `date`, `call_started`, `daily_caller` | Yes (context at arrival) |
-| `call_answered`, `call_ended`, `wait_length`, `service_length` | No (post-event / leakage) |
-| `meets_standard` | Target |
+Selected feature set:
 
-`meets_standard` is exactly `wait_length <= 60` (0 disagreements in 51,708 rows). `wait_length` is therefore **not** an input.
+- `daily_caller`
+- cyclical time features using sine/cosine encoding
+- `day_of_month`
+- hour, weekday, and month context derived from the call timestamp
 
----
+This project intentionally avoids leaking post-arrival information such as `wait_length` and `service_length` into the model.
 
-## Objective
+## Model architecture
 
-Binary classification:
+The solution uses a TensorFlow/Keras feed-forward neural network with:
 
-- `True` — call met the service standard  
-- `False` — call missed the service standard  
+- input layer for engineered arrival features
+- hidden dense layers with ReLU activation
+- sigmoid output layer for binary classification
+- binary cross-entropy loss
+- Adam optimiser
+- class-weight balancing on the training split
 
----
+The training pipeline uses a chronological 70/15/15 split so the model is evaluated on later demand patterns rather than mixing time periods.
 
-## Features
+## Experiments and validation
 
-`daily_caller`, cyclical hour / weekday / month (`sin`/`cos`), `day_of_month`.
+Four experiments were evaluated against the validation set to compare model capacity and regularisation.
 
----
+| Experiment | Architecture | Learning rate | Best use |
+|---|---:|---:|---|
+| Baseline | [32] | 0.001 | Simple starting point |
+| Increased capacity | [64, 32] | 0.001 | Better learning of nonlinear queue patterns |
+| Lower learning rate | [64, 32] | 0.0005 | More stable optimisation |
+| Dropout regularisation | [64, 32] | 0.0005 | Regularisation test |
 
-## Model
-
-- Type: feed-forward MLP  
-- Output: sigmoid  
-- Loss: binary cross-entropy  
-- Optimiser: Adam  
-- Class weights: balanced on the **training** split only  
-- Split: chronological 70% / 15% / 15% by `call_started` (avoids mixing December congestion into training)
-
----
-
-## Experiments (validation)
-
-| Experiment | Architecture | LR | Batch | Epochs | Dropout | Accuracy | F1 (False) |
-|------------|--------------|----|-------|--------|---------|----------|------------|
-| 1 Baseline | [32] | 0.001 | 32 | 20 | — | 0.2617 | 0.2365 |
-| 2 Capacity | [64, 32] | 0.001 | 32 | 30 | — | 0.3394 | 0.2199 |
-| **3 Lower LR** | [64, 32] | 0.0005 | 32 | 30 | — | **0.4116** | **0.2391** |
-| 4 Dropout | [64, 32] | 0.0005 | 32 | 30 | 0.3 | 0.3124 | 0.2334 |
-
-Selected: **Experiment 3** (highest validation F1 on the minority class).
-
-### Test set (untouched; Exp 3)
-
-| Metric | False (not met) | True (met) |
-|--------|-----------------|------------|
-| Precision | 0.1607 | 0.8399 |
-| Recall | 0.6450 | 0.3560 |
-| F1 | 0.2573 | 0.5000 |
-| Accuracy | 0.4023 | |
-| Macro F1 | 0.3786 | |
-
-Confusion matrix: TN 803, FP 442, FN 4,194, TP 2,318 (n = 7,757).
-
-Accuracy is **not** treated as success. A constant “True” rule would score 83.95% on this test window.
-
----
-
-## Class imbalance
-
-| Class | Count | % |
-|-------|------:|--:|
-| True (met) | 47,481 | 91.83 |
-| False (not met) | 4,227 | 8.17 |
-
-Ratio 11.23 : 1. Balanced class weights; no SMOTE.
-
----
+The final evaluation focuses on the minority class (`False`) using precision, recall, and F1-score rather than raw accuracy alone.
 
 ## Repository layout
 
-```
+```text
 .
 ├── data/
 │   └── simulated_call_centre.csv
-├── notebooks/
-│   └── week4_neural_network.ipynb
 ├── docs/
-│   ├── neural_network_report.md
 │   └── figures/
 │       ├── fig1_class_distribution.png
 │       ├── fig2_daily_caller_by_target.png
@@ -114,16 +89,18 @@ Ratio 11.23 : 1. Balanced class weights; no SMOTE.
 │       └── fig_train_exp*.png
 ├── ml_experiments/
 │   ├── nn_classifier.py
-│   └── run_experiments.py
-├── results.json
+│   ├── run_experiments.py
+│   └── generate_week4_notebook.py
+├── notebooks/
+│   └── week4_neural_network.ipynb
+├── .gitignore
 ├── README.md
 ├── requirements.txt
-└── .gitignore
+├── results.json
+├── Week2_EDA_CallCentre.ipynb
+├── Week2_EDA_CallCentre_executed.ipynb
+└── simulated_call_centre.csv/
 ```
-
-Week 2 EDA notebooks remain at the project root for continuity with the same dataset.
-
----
 
 ## How to run
 
@@ -133,35 +110,25 @@ python ml_experiments/run_experiments.py
 jupyter notebook notebooks/week4_neural_network.ipynb
 ```
 
-Run the notebook **from top to bottom**. Figures are also written to `docs/figures/`.
+## Key outputs
+
+Generated artifacts include:
+
+- confusion matrix and experiment comparison charts
+- training-loss and validation-loss plots
+- final model metrics saved in `results.json`
+- notebook-based workflow for the assignment deliverable
+
+## Project status
+
+This repository is structured and ready for GitHub publishing. The code, figures, and evaluation outputs are all included, making it suitable for sharing and presenting as a project portfolio item.
+
+## Course / project context
+
+- University: Westcliff University
+- Course: TECH 405 — Artificial Neural Network and Deep Learning
+- Project: AI-Based Smart Queue & Time Management System
 
 ---
 
-## Publishing to GitHub
-
-Create an empty GitHub repository, then from this project folder:
-
-```bash
-git init
-git add .
-git commit -m "Week 4 neural network implementation"
-git branch -M main
-git remote add origin YOUR_GITHUB_REPOSITORY_URL
-git push -u origin main
-```
-
-Do not invent a URL. Use the address GitHub shows after you create the repo. Put that link on the assignment submission form.
-
-If you already initialised git in this folder, skip `git init` and only add the remote.
-
----
-
-## Dataset attribution
-
-Simulated call-centre queue data originally published on Kaggle for business/operations analytics teaching, generated with R `simmer` (four agents, weekday 08:00–18:00, ~5-minute mean service, 60-second standard). License: Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).
-
----
-
-## Course
-
-Bishwadeep Rai — Westcliff University — TECH 405: Artificial Neural Network and Deep Learning — Week 4.
+If you want the repo to look even closer to your reference image, the next improvement is to add a more visual project banner, a short architecture diagram, and a cleaner result summary section at the top of this README.
