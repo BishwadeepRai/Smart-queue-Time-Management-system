@@ -97,9 +97,7 @@ The final evaluation focuses on the minority class (`False`) using precision, re
 ├── README.md
 ├── requirements.txt
 ├── results.json
-├── Week2_EDA_CallCentre.ipynb
-├── Week2_EDA_CallCentre_executed.ipynb
-└── simulated_call_centre.csv/
+└── .gitignore
 ```
 
 ## How to run
@@ -121,7 +119,7 @@ Generated artifacts include:
 
 ## Project status
 
-This repository is structured and ready for GitHub publishing. The code, figures, and evaluation outputs are all included, making it suitable for sharing and presenting as a project portfolio item.
+This repository is cleaned to the actual Week 4 classification workflow and is ready for professional GitHub presentation. The project keeps only the data, model code, figures, notebook, and final evaluation outputs needed for the assignment.
 
 ## Course / project context
 
@@ -131,4 +129,4 @@ This repository is structured and ready for GitHub publishing. The code, figures
 
 ---
 
-If you want the repo to look even closer to your reference image, the next improvement is to add a more visual project banner, a short architecture diagram, and a cleaner result summary section at the top of this README.
+This version follows the project’s real scope rather than the earlier exploratory Week 2 files, and it is structured to match the clean GitHub presentation you asked for.
