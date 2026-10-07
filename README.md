@@ -19,7 +19,7 @@ The Week 5 model predicts `meets_standard`:
 - `True` (1): the call met the standard
 - `False` (0): the call missed the standard
 
-The Week 5 deliverable is [`notebooks/week5_rnn_lstm.ipynb`](notebooks/week5_rnn_lstm.ipynb). The earlier Week 4 feed-forward classifier remains in [`notebooks/week4_neural_network.ipynb`](notebooks/week4_neural_network.ipynb).
+The Week 5 deliverables are grouped in [`week 5/`](week%205/), including the [LSTM notebook](week%205/week5_rnn_lstm.ipynb) and a [Week 5 overview](week%205/README.md). The earlier Week 4 feed-forward classifier remains in [`notebooks/week4_neural_network.ipynb`](notebooks/week4_neural_network.ipynb).
 
 ## Dataset
 
@@ -72,7 +72,11 @@ The notebook contains the training/validation loss plots, confusion matrix, vali
 │   └── figures/
 ├── ml_experiments/
 ├── notebooks/
-│   ├── week4_neural_network.ipynb
+│   └── week4_neural_network.ipynb
+├── week 2/
+├── week 4/
+├── week 5/
+│   ├── README.md
 │   └── week5_rnn_lstm.ipynb
 ├── README.md
 └── requirements.txt
@@ -84,10 +88,12 @@ From the project root:
 
 ```powershell
 python -m pip install -r requirements.txt
-jupyter notebook notebooks/week5_rnn_lstm.ipynb
+jupyter notebook "week 5/week5_rnn_lstm.ipynb"
 ```
 
 The notebook selects CUDA automatically when the installed PyTorch build and driver support it. For an NVIDIA GPU, choose the matching build with the official [PyTorch installation selector](https://pytorch.org/get-started/locally/).
+
+Week 5 figures, training output, evaluation metrics, and the editable report-ready summary are included in the notebook.
 
 ## Dataset Redistribution
 
