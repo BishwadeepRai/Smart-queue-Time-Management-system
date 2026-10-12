@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b2d">
+  <title>Smart Queue | Project Demo</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b1220;
+      --panel: #131f32;
+      --panel-light: #192840;
+      --line: #2a3b53;
+      --text: #edf4fc;
+      --muted: #a8b7ca;
+      --teal: #65e0c1;
+      --blue: #82b8ff;
+      --amber: #ffd17c;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(ellipse at 85% 0%, #18334a 0, transparent 36rem),
+        var(--bg);
+      color: var(--text);
+      font: 16px/1.55 "Segoe UI", Inter, system-ui, sans-serif;
+    }
+    button, select { font: inherit; }
+    a { color: inherit; }
+    .wrap { width: min(1120px, calc(100% - 40px)); margin: auto; }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand { font-weight: 750; letter-spacing: .02em; }
+    .brand span { color: var(--teal); }
+    nav { display: flex; flex-wrap: wrap; gap: 20px; }
+    nav a { color: var(--muted); text-decoration: none; font-size: .92rem; }
+    nav a:hover, nav a:focus-visible { color: var(--teal); }
+    .hero { padding: 70px 0 42px; max-width: 850px; }
+    .eyebrow {
+      color: var(--teal);
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      font-size: .78rem;
+      font-weight: 750;
+    }
+    h1 { font-size: clamp(2.3rem, 6vw, 4.4rem); line-height: 1.04; margin: 16px 0; letter-spacing: -.045em; }
+    h1 em { color: var(--teal); font-style: normal; }
+    .hero p { color: var(--muted); font-size: 1.1rem; max-width: 720px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+    .button {
+      border: 1px solid var(--line);
+      background: var(--panel-light);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 11px 16px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .button.primary { color: #09231e; border-color: var(--teal); background: var(--teal); font-weight: 750; }
+    .button:hover { filter: brightness(1.08); }
+    .grid { display: grid; gap: 16px; }
+    .metrics { grid-template-columns: repeat(4, 1fr); margin: 18px 0 56px; }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: linear-gradient(145deg, var(--panel-light), var(--panel));
+      padding: 22px;
+    }
+    .metric-value { font-size: clamp(1.7rem, 4vw, 2.4rem); font-weight: 780; letter-spacing: -.04em; }
+    .metric-label { color: var(--muted); font-size: .9rem; }
+    section { padding: 14px 0 50px; scroll-margin-top: 20px; }
+    .section-head { margin-bottom: 20px; }
+    .section-head h2 { margin: 0 0 6px; font-size: clamp(1.6rem, 4vw, 2.25rem); letter-spacing: -.03em; }
+    .section-head p { color: var(--muted); margin: 0; max-width: 760px; }
+    .explorer { display: grid; grid-template-columns: .8fr 1.2fr; gap: 18px; align-items: stretch; }
+    .controls { display: grid; gap: 16px; align-content: start; }
+    label { display: grid; gap: 7px; color: var(--muted); font-size: .9rem; }
+    select {
+      background: #0c1727;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 11px 12px;
+      width: 100%;
+    }
+    select:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+    .result { display: flex; flex-direction: column; justify-content: center; min-height: 245px; }
+    .result-top { display: flex; justify-content: space-between; align-items: end; gap: 12px; }
+    .result-kicker { color: var(--muted); }
+    .result-rate { color: var(--teal); font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 800; line-height: 1.1; letter-spacing: -.05em; }
+    .bar { height: 12px; background: #0b1422; border-radius: 99px; overflow: hidden; margin: 18px 0 12px; }
+    .bar > span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #4eb9a1, var(--teal)); border-radius: inherit; transition: width .35s ease; }
+    .result-note, .fine { color: var(--muted); font-size: .88rem; }
+    .callout {
+      border-left: 3px solid var(--amber);
+      padding: 12px 15px;
+      border-radius: 0 9px 9px 0;
+      background: #332b1c66;
+      color: #e9d7b5;
+      font-size: .9rem;
+      margin-top: 16px;
+    }
+    .pipeline { grid-template-columns: repeat(4, 1fr); }
+    .step-number { color: var(--teal); font-weight: 800; font-size: .8rem; letter-spacing: .12em; }
+    .step h3 { margin: 9px 0 5px; font-size: 1.05rem; }
+    .step p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .results-grid { grid-template-columns: 1fr 1fr; }
+    .score-row { margin: 17px 0; }
+    .score-label { display: flex; justify-content: space-between; gap: 14px; font-size: .93rem; }
+    .score-label span:last-child { font-weight: 750; }
+    .scorebar { height: 9px; background: #0b1422; border-radius: 99px; margin-top: 8px; overflow: hidden; }
+    .scorebar span { display: block; height: 100%; border-radius: inherit; background: var(--blue); }
+    .scorebar .lstm { background: var(--amber); }
+    .honest { color: var(--amber); font-weight: 700; }
+    footer { border-top: 1px solid var(--line); padding: 22px 0 34px; color: var(--muted); font-size: .86rem; }
+    @media (max-width: 760px) {
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .explorer, .results-grid { grid-template-columns: 1fr; }
+      .pipeline { grid-template-columns: repeat(2, 1fr); }
+      .hero { padding-top: 48px; }
+    }
+    @media (max-width: 480px) {
+      .wrap { width: min(100% - 28px, 1120px); }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      nav { gap: 14px; }
+      .pipeline { grid-template-columns: 1fr; }
+    }
+    @media print {
+      :root { color-scheme: light; --bg: white; --panel: white; --panel-light: white; --line: #bbb; --text: #17202b; --muted: #46515e; }
+      body { background: white; color: #17202b; }
+      .actions, nav, .controls { display: none; }
+      .card { break-inside: avoid; }
+      section { padding-bottom: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="topbar">
+      <div class="brand">SMART<span>QUEUE</span> <span style="color:var(--muted);font-weight:500">/ PROJECT DEMO</span></div>
+      <nav aria-label="Page sections">
+        <a href="#explore">Explore data</a>
+        <a href="#method">How it works</a>
+        <a href="#results">Model results</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow">TECH 405 · Artificial Neural Network and Deep Learning</div>
+        <h1>Can call history help us understand <em>queue performance?</em></h1>
+        <p>
+          This project analyzes a simulated call-centre queue and tests whether an LSTM
+          can predict if the next call meets the service standard. Explore the observed
+          data patterns, then review the model's honest test results.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="#explore">Start the demo ↓</a>
+          <button class="button" id="print-button" type="button">Print / save as PDF</button>
+        </div>
+      </section>
+
+      <div class="grid metrics" aria-label="Project dataset summary">
+        <div class="card"><div class="metric-value">51,708</div><div class="metric-label">simulated call records</div></div>
+        <div class="card"><div class="metric-value">91.83%</div><div class="metric-label">calls met the standard overall</div></div>
+        <div class="card"><div class="metric-value">261</div><div class="metric-label">operating dates in 2021</div></div>
+        <div class="card"><div class="metric-value">20</div><div class="metric-label">previous calls per LSTM sequence</div></div>
+      </div>
+
+      <section id="explore">
+        <div class="section-head">
+          <div class="eyebrow">01 · Interactive data explorer</div>
+          <h2>Explore historical service performance</h2>
+          <p>Choose a time grouping to see the actual percentage of calls that met the standard in the project dataset.</p>
+        </div>
+        <div class="explorer">
+          <div class="card controls">
+            <label for="group">Explore by
+              <select id="group">
+                <option value="hour">Hour of arrival</option>
+                <option value="weekday">Day of week</option>
+                <option value="month">Month</option>
+              </select>
+            </label>
+            <label for="period" id="period-label">Choose hour
+              <select id="period"></select>
+            </label>
+            <div class="fine">This view reports historical averages from the dataset; it is not a live prediction.</div>
+          </div>
+          <div class="card result" aria-live="polite">
+            <div class="result-top">
+              <div>
+                <div class="result-kicker" id="result-title">Historical meet rate</div>
+                <div class="result-rate" id="rate">—</div>
+              </div>
+              <div class="fine" id="period-description"></div>
+            </div>
+            <div class="bar" role="img" aria-label="Percentage of calls meeting the standard"><span id="rate-bar"></span></div>
+            <div class="result-note" id="result-note"></div>
+          </div>
+        </div>
+        <div class="callout"><strong>Presenter note:</strong> “The service-standard rate varies over time. This explorer shows descriptive patterns; it does not claim that time alone causes missed calls.”</div>
+      </section>
+
+      <section id="method">
+        <div class="section-head">
+          <div class="eyebrow">02 · Project workflow</div>
+          <h2>From call events to a next-call estimate</h2>
+          <p>The Week 5 model uses an ordered window of recent calls to estimate the service-standard outcome for the following call.</p>
+        </div>
+        <div class="grid pipeline">
+          <article class="card step"><div class="step-number">STEP 01</div><h3>Prepare the data</h3><p>Sort events by time and derive calendar features from call start time.</p></article>
+          <article class="card step"><div class="step-number">STEP 02</div><h3>Build sequences</h3><p>Use 20 previous calls from the same operating date as each input sequence.</p></article>
+          <article class="card step"><div class="step-number">STEP 03</div><h3>Train an LSTM</h3><p>Learn temporal patterns to classify whether the next call met the standard.</p></article>
+          <article class="card step"><div class="step-number">STEP 04</div><h3>Test in time order</h3><p>Hold out the latest 20% of call records to evaluate future-period performance.</p></article>
+        </div>
+        <div class="callout"><strong>Leakage prevention:</strong> wait length was excluded because it directly determines the target in this simulated dataset. Call identifiers and post-call fields were also excluded.</div>
+      </section>
+
+      <section id="results">
+        <div class="section-head">
+          <div class="eyebrow">03 · Week 5 LSTM evaluation</div>
+          <h2>Results—and what they mean</h2>
+          <p>These are the project's reported held-out test metrics, not results generated by this web page.</p>
+        </div>
+        <div class="grid results-grid">
+          <div class="card">
+            <h3 style="margin-top:0">Accuracy on future test data</h3>
+            <div class="score-row">
+              <div class="score-label"><span>Training-majority baseline</span><span>84.06%</span></div>
+              <div class="scorebar"><span style="width:84.06%"></span></div>
+            </div>
+            <div class="score-row">
+              <div class="score-label"><span>Selected LSTM</span><span>74.34%</span></div>
+              <div class="scorebar"><span class="lstm" style="width:74.34%"></span></div>
+            </div>
+            <div class="fine">The baseline predicts the most common training class for every test example.</div>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0">Key takeaway</h3>
+            <p class="honest">The selected LSTM did not beat the majority baseline.</p>
+            <p>It identified 12.93% of the calls that missed the standard (missed-standard recall). This shows why accuracy alone is not enough when classes are imbalanced.</p>
+            <p class="fine">The dataset is simulated; these results do not establish that the model is ready for a real call centre.</p>
+          </div>
+        </div>
+        <div class="actions">
+          <a class="button" href="#explore">Try another time period ↑</a>
+          <button class="button" id="reset-button" type="button">Reset explorer</button>
+        </div>
+      </section>
+    </main>
+    <footer>AI-Based Smart Queue &amp; Time Management System · TECH 405 · Call Centre Queue Simulation</footer>
+  </div>
+  <script>
+    "use strict";
+    const rates = {
+      hour: {
+        label: "Choose hour",
+        options: [
+          ["8", "8:00 AM", 92.78616120721384],
+          ["9", "9:00 AM", 93.09668562463229],
+          ["10", "10:00 AM", 92.90474323794591],
+          ["11", "11:00 AM", 92.10268469527729],
+          ["12", "12:00 PM", 91.46294881588999],
+          ["13", "1:00 PM", 89.8630658044884],
+          ["14", "2:00 PM", 91.76470588235294],
+          ["15", "3:00 PM", 90.914231856738],
+          ["16", "4:00 PM", 91.02392344497608],
+          ["17", "5:00 PM", 92.4508126603935]
+        ]
+      },
+      weekday: {
+        label: "Choose weekday",
+        options: [
+          ["Mon", "Monday", 91.71222178836392],
+          ["Tue", "Tuesday", 91.50345902757479],
+          ["Wed", "Wednesday", 93.03944315545245],
+          ["Thu", "Thursday", 92.52115725250934],
+          ["Fri", "Friday", 90.40673211781206]
+        ]
+      },
+      month: {
+        label: "Choose month",
+        options: [
+          ["1", "January", 97.46666666666667],
+          ["2", "February", 97.5171512577584],
+          ["3", "March", 97.23221699418765],
+          ["4", "April", 97.17188358045079],
+          ["5", "May", 95.77231279358939],
+          ["6", "June", 95.0149551345962],
+          ["7", "July", 93.9631336405538],
+          ["8", "August", 92.0885382423844],
+          ["9", "September", 89.88450816407806],
+          ["10", "October", 88.2317562149158],
+          ["11", "November", 86.30112520092874],
+          ["12", "December", 83.45335253640582]
+        ]
+      }
+    };
+
+    const groupSelect = document.querySelector("#group");
+    const periodSelect = document.querySelector("#period");
+    const periodLabel = document.querySelector("#period-label");
+    const rateElement = document.querySelector("#rate");
+    const barElement = document.querySelector("#rate-bar");
+    const titleElement = document.querySelector("#result-title");
+    const descriptionElement = document.querySelector("#period-description");
+    const noteElement = document.querySelector("#result-note");
+
+    function updateResult() {
+      const group = rates[groupSelect.value];
+      const option = group.options.find(([value]) => value === periodSelect.value);
+      if (!option) return;
+      const [value, name, rate] = option;
+      const groupName = groupSelect.options[groupSelect.selectedIndex].text.toLowerCase();
+      rateElement.textContent = `${rate.toFixed(2)}%`;
+      titleElement.textContent = `Calls meeting standard · ${name}`;
+      descriptionElement.textContent = groupName;
+      barElement.style.width = `${rate}%`;
+      noteElement.textContent = `In the 2021 simulated dataset, ${rate.toFixed(2)}% of calls in this ${groupName} met the service standard.`;
+    }
+
+    function populatePeriods() {
+      const group = rates[groupSelect.value];
+      periodLabel.firstChild.textContent = `${group.label} `;
+      periodSelect.replaceChildren(...group.options.map(([value, name]) => {
+        const option = document.createElement("option");
+        option.value = value;
+        option.textContent = name;
+        return option;
+      }));
+      updateResult();
+    }
+
+    groupSelect.addEventListener("change", populatePeriods);
+    periodSelect.addEventListener("change", updateResult);
+    document.querySelector("#print-button").addEventListener("click", () => window.print());
+    document.querySelector("#reset-button").addEventListener("click", () => {
+      groupSelect.value = "hour";
+      populatePeriods();
+      document.querySelector("#explore").scrollIntoView({ behavior: "smooth" });
+    });
+    populatePeriods();
+  </script>
+</body>
+</html>

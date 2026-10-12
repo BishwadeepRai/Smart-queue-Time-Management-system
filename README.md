@@ -21,6 +21,10 @@ The Week 5 model predicts `meets_standard`:
 
 The Week 5 deliverables are grouped in [`week 5/`](week%205/), including the [LSTM notebook](week%205/week5_rnn_lstm.ipynb) and a [Week 5 overview](week%205/README.md). The earlier Week 4 feed-forward classifier remains in [`notebooks/week4_neural_network.ipynb`](notebooks/week4_neural_network.ipynb).
 
+## Presentation Demo
+
+Open [`presentation_demo.html`](presentation_demo.html) in a web browser for a self-contained, interactive project walkthrough. The page includes a historical service-rate explorer, the Week 5 workflow, and the reported LSTM test results. The explorer shows descriptive dataset averages; it does not run the trained LSTM or make live predictions.
+
 ## Dataset
 
 - **Dataset:** Call Centre Queue Simulation
