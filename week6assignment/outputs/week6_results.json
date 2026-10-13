@@ -1,0 +1,82 @@
+{
+  "dataset": "Bitext Customer Service Tagged Training Dataset",
+  "dataset_url": "https://huggingface.co/datasets/bitext/Bitext-customer-support-llm-chatbot-training-dataset",
+  "source_rows": 26872,
+  "number_of_intents": 27,
+  "train_rows": 18810,
+  "validation_rows": 4031,
+  "test_rows": 4031,
+  "seed": 42,
+  "class_names": [
+    "cancel_order",
+    "change_order",
+    "change_shipping_address",
+    "check_cancellation_fee",
+    "check_invoice",
+    "check_payment_methods",
+    "check_refund_policy",
+    "complaint",
+    "contact_customer_service",
+    "contact_human_agent",
+    "create_account",
+    "delete_account",
+    "delivery_options",
+    "delivery_period",
+    "edit_account",
+    "get_invoice",
+    "get_refund",
+    "newsletter_subscription",
+    "payment_issue",
+    "place_order",
+    "recover_password",
+    "registration_problems",
+    "review",
+    "set_up_shipping_address",
+    "switch_account",
+    "track_order",
+    "track_refund"
+  ],
+  "metrics": {
+    "Majority baseline": {
+      "accuracy": 0.037211610022326966,
+      "precision_macro": 0.0013782077786047024,
+      "recall_macro": 0.037037037037037035,
+      "f1_macro": 0.002657524781418587,
+      "roc_auc_ovr_macro": null
+    },
+    "Feed-forward MLP": {
+      "accuracy": 0.9942942197965765,
+      "precision_macro": 0.994353890760223,
+      "recall_macro": 0.9943059372080854,
+      "f1_macro": 0.9942972649340023,
+      "roc_auc_ovr_macro": 0.9999827492005053
+    },
+    "PyTorch LSTM": {
+      "accuracy": 0.9888365169933019,
+      "precision_macro": 0.9890512177710837,
+      "recall_macro": 0.9888488451676829,
+      "f1_macro": 0.9888636822335725,
+      "roc_auc_ovr_macro": 0.9999603745176096
+    }
+  },
+  "mlp_validation_macro_f1_by_epoch": [
+    0.9182687609639104,
+    0.9893721696397422,
+    0.9938246478732352,
+    0.9942930989475024,
+    0.9947953941509716,
+    0.9950498617359592,
+    0.9945482795196248,
+    0.993558984388514
+  ],
+  "lstm_validation_macro_f1_by_epoch": [
+    0.8709670192742327,
+    0.9590049781016895,
+    0.9777373383517288,
+    0.9839030151390835,
+    0.9868666891166767,
+    0.9873628933953943,
+    0.9878424095952227,
+    0.9891015703972996
+  ]
+}
