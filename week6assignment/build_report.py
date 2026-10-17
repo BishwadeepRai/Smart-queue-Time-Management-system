@@ -13,6 +13,7 @@ from docx.oxml.ns import qn
 ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = ROOT / "outputs"
 RESULTS_PATH = OUTPUT_DIR / "week6_results.json"
+IMAGE_DIR = ROOT / "images"
 REPORT_PATH = ROOT / "Week6_Customer_Support_Intent_Classification_Report.docx"
 
 
@@ -200,7 +201,7 @@ def main():
         ("roc_curves.png", "Figure 2. Micro-averaged one-vs-rest ROC curves."),
         ("training_loss.png", "Figure 3. Training cross-entropy by epoch."),
     ):
-        image_path = OUTPUT_DIR / image_name
+        image_path = IMAGE_DIR / image_name
         if not image_path.exists():
             raise FileNotFoundError(
                 f"{image_path} is missing. Re-run all notebook cells before building the report."

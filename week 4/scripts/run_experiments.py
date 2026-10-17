@@ -23,14 +23,15 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.utils.class_weight import compute_class_weight
 from sklearn.metrics import ConfusionMatrixDisplay, classification_report
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "ml_experiments"))
+WEEK_DIR = Path(__file__).resolve().parents[1]
+ROOT = WEEK_DIR.parent
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from nn_classifier import SEED, build_classifier, classification_metrics, predict_labels, set_seeds
 
 CSV_PATH = ROOT / "data" / "simulated_call_centre.csv"
-FIG_DIR = ROOT / "docs" / "figures"
-RESULTS_PATH = ROOT / "results.json"
+FIG_DIR = WEEK_DIR / "images"
+RESULTS_PATH = WEEK_DIR / "results.json"
 
 FEATURE_COLS = [
     "daily_caller",

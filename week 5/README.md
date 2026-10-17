@@ -18,7 +18,7 @@ The dataset is shared with the rest of the project at [`../data/simulated_call_c
 - Fit scaling on training-window features only and use validation data for model selection.
 - Exclude `wait_length`, which directly determines the target, as well as the call identifier and post-arrival fields.
 
-The full workflow, plots, experiment comparison, confusion matrix, and editable report summary are in [`week5_rnn_lstm.ipynb`](week5_rnn_lstm.ipynb).
+The full workflow, plots, experiment comparison, confusion matrix, and editable report summary are in [`week5_rnn_lstm.ipynb`](week5_rnn_lstm.ipynb). Exported notebook charts are also collected in [`images/`](images/).
 
 ## Results
 
