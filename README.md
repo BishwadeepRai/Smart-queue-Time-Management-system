@@ -9,7 +9,7 @@ This repository contains the coursework notebooks and supporting outputs for the
 | 2 | Exploratory data analysis | [Executed EDA notebook](week%202/Week2_EDA_CallCentre.ipynb) |
 | 4 | Feed-forward neural-network classification | [Executed notebook](week%204/week4_neural_network.ipynb) |
 | 5 | Sequential service-standard classification with an LSTM | [Executed notebook](week%205/week5_rnn_lstm.ipynb) |
-| 6 | Customer-support intent classification | [Executed notebook and report](week6assignment/README.md) |
+| 6 | Customer-support intent classification | [Executed notebook and report](week%206/README.md) |
 
 ## Repository structure
 
@@ -32,7 +32,7 @@ This repository contains the coursework notebooks and supporting outputs for the
 │   ├── README.md
 │   ├── week5_rnn_lstm.ipynb
 │   └── images/
-└── week6assignment/
+└── week 6/
     ├── README.md
     ├── week6_customer_support_intent_classification.ipynb
     ├── Week6_Customer_Support_Intent_Classification_Report.docx
@@ -54,7 +54,7 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-Week 6 has its own [`requirements.txt`](week6assignment/requirements.txt) and dataset setup instructions in its [assignment README](week6assignment/README.md).
+Week 6 has its own [`requirements.txt`](week%206/requirements.txt) and dataset setup instructions in its [assignment README](week%206/README.md).
 
 ## Shared dataset
 
