@@ -7,6 +7,8 @@ The executed notebook compares a TF-IDF feed-forward neural network (MLP) and a 
 ## Deliverables
 
 - [`week6_customer_support_intent_classification.ipynb`](week6_customer_support_intent_classification.ipynb) — executed analysis, training, evaluation, and figures.
+- [`Week7_Assignment6_Technical_Report.docx`](Week7_Assignment6_Technical_Report.docx) — editable Week 7 report focused on the actual Assignment 6 intent-classification experiment.
+- [`build_assignment6_week7_report.py`](build_assignment6_week7_report.py) — rebuilds the Assignment 6 Week 7 report and its implementation-specific pipeline flowchart from the saved notebook, results, and figures.
 - [`Week6_Customer_Support_Intent_Classification_Report.docx`](Week6_Customer_Support_Intent_Classification_Report.docx) — Week 6-specific report with the duplicate-aware experiment, EDA, code excerpts, results, and figures.
 - [`images/`](images/) — EDA, confusion-matrix, ROC, and training-loss figures used by the report.
 - [`outputs/week6_results.json`](outputs/week6_results.json) — saved evaluation metrics used by the report builder.
@@ -33,6 +35,14 @@ python "week 6/build_week7_report.py"
 ```
 
 The report builder reads `week 6/outputs/week6_results.json`, the executed notebook, and the plot images. It updates this folder's report and `Week6_Intent_Classification_Report_APA7_Final.docx` at the repository root. The project-wide Week 7 report covering all project stages is built separately with [`build_project_week7_report.py`](../build_project_week7_report.py).
+
+To rebuild the comprehensive Assignment 6 Week 7 technical report, run:
+
+```powershell
+python "week 6/build_assignment6_week7_report.py"
+```
+
+This creates `Week7_Assignment6_Technical_Report.docx` in this folder and saves its editable vector/raster pipeline figure in the repository's `report_assets/` folder. The report uses the recorded results and saved experimental figures; it does not fabricate user-interface screenshots.
 
 ## Dataset and limitations
 

@@ -9,6 +9,11 @@ the progression across Weeks 2, 4, 5, and 6 while keeping their distinct targets
 datasets, and experiments separate. Regenerate it after executing the weekly
 workflows with `python build_project_week7_report.py`.
 
+The [Week 7 technical evidence pack](report_assets/technical_evidence.md) includes
+the implementation-specific pipeline flowchart, copied experiment figures,
+verified intermediate results, suggested code excerpts, and a checklist of
+screenshots to capture from the executed project.
+
 ## Assignments
 
 | Week | Assignment | Main deliverable |
@@ -27,6 +32,11 @@ workflows with `python build_project_week7_report.py`.
 ├── data/
 │   └── simulated_call_centre.csv
 ├── requirements.txt
+├── report_assets/
+│   ├── technical_evidence.md
+│   ├── actual_project_pipeline.png
+│   ├── actual_project_pipeline.svg
+│   └── existing Week 2/4/5/6 result figures
 ├── week 2/
 │   ├── README.md
 │   ├── Week2_EDA_CallCentre.ipynb
