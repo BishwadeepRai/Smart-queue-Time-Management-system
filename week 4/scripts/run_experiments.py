@@ -21,7 +21,12 @@ import pandas as pd
 import seaborn as sns
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils.class_weight import compute_class_weight
-from sklearn.metrics import ConfusionMatrixDisplay, classification_report
+from sklearn.metrics import (
+    ConfusionMatrixDisplay,
+    classification_report,
+    roc_auc_score,
+    roc_curve,
+)
 
 WEEK_DIR = Path(__file__).resolve().parents[1]
 ROOT = WEEK_DIR.parent
@@ -367,11 +372,34 @@ def main() -> None:
     best_model = models[best_id]
     y_test_pred, y_test_proba = predict_labels(best_model, X_test)
     test_metrics = classification_metrics(y_test, y_test_pred)
+    test_metrics["roc_auc_positive_meets_standard"] = float(
+        roc_auc_score(y_test, y_test_proba)
+    )
     plot_confusion(
         test_metrics["confusion_matrix"],
         f"Test confusion matrix — {best['name']}",
         "fig8_confusion_matrix.png",
     )
+
+    false_positive_rate, true_positive_rate, _ = roc_curve(y_test, y_test_proba)
+    fig, ax = plt.subplots(figsize=(7.5, 5.5))
+    ax.plot(
+        false_positive_rate,
+        true_positive_rate,
+        label=f"{best['name']} (AUC={test_metrics['roc_auc_positive_meets_standard']:.3f})",
+        color="#1565C0",
+        linewidth=2,
+    )
+    ax.plot([0, 1], [0, 1], linestyle="--", color="gray", label="Chance")
+    ax.set(
+        title="Week 4 held-out ROC curve",
+        xlabel="False positive rate",
+        ylabel="True positive rate (meets standard)",
+        xlim=(0, 1),
+        ylim=(0, 1.02),
+    )
+    ax.legend(loc="lower right")
+    savefig("fig10_roc_curve.png")
 
     # Comparison bar chart of minority-class F1 on validation
     fig, ax = plt.subplots(figsize=(10, 4.4))

@@ -2,6 +2,13 @@
 
 This repository contains the coursework notebooks and supporting outputs for the call-centre queue project. Each week’s deliverables and run instructions are kept with that week’s assignment.
 
+## Week 7 project-wide technical report
+
+The [project-wide technical report](Project_Week7_Technical_Report.docx) documents
+the progression across Weeks 2, 4, 5, and 6 while keeping their distinct targets,
+datasets, and experiments separate. Regenerate it after executing the weekly
+workflows with `python build_project_week7_report.py`.
+
 ## Assignments
 
 | Week | Assignment | Main deliverable |
@@ -9,12 +16,14 @@ This repository contains the coursework notebooks and supporting outputs for the
 | 2 | Exploratory data analysis | [Executed EDA notebook](week%202/Week2_EDA_CallCentre.ipynb) |
 | 4 | Feed-forward neural-network classification | [Executed notebook](week%204/week4_neural_network.ipynb) |
 | 5 | Sequential service-standard classification with an LSTM | [Executed notebook](week%205/week5_rnn_lstm.ipynb) |
-| 6 | Customer-support intent classification | [Executed notebook and report](week%206/README.md) |
+| 6 | Customer-support intent classification | [Executed notebook and Week 6 report details](week%206/README.md) |
 
 ## Repository structure
 
 ```text
 .
+├── Project_Week7_Technical_Report.docx
+├── build_project_week7_report.py
 ├── data/
 │   └── simulated_call_centre.csv
 ├── requirements.txt
@@ -31,17 +40,19 @@ This repository contains the coursework notebooks and supporting outputs for the
 ├── week 5/
 │   ├── README.md
 │   ├── week5_rnn_lstm.ipynb
-│   └── images/
+│   ├── images/
+│   └── outputs/
 └── week 6/
     ├── README.md
     ├── week6_customer_support_intent_classification.ipynb
     ├── Week6_Customer_Support_Intent_Classification_Report.docx
+    ├── build_week7_report.py
     ├── images/
     ├── outputs/
     └── build_report.py
 ```
 
-Saved chart files are grouped in each assignment’s `images/` folder; the executed notebooks also retain their inline outputs. Week 6 keeps its machine-readable metrics in `outputs/week6_results.json`.
+Saved chart files are grouped in each assignment’s `images/` folder; the executed notebooks also retain their inline outputs. Week 5 and Week 6 keep machine-readable metrics in their `outputs/` folders. The project-wide report summarizes the separate stage results, including Week 6's duplicate-aware holdout evaluation.
 
 ## Setup
 

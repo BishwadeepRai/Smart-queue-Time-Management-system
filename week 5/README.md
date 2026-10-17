@@ -18,7 +18,7 @@ The dataset is shared with the rest of the project at [`../data/simulated_call_c
 - Fit scaling on training-window features only and use validation data for model selection.
 - Exclude `wait_length`, which directly determines the target, as well as the call identifier and post-arrival fields.
 
-The full workflow, plots, experiment comparison, confusion matrix, and editable report summary are in [`week5_rnn_lstm.ipynb`](week5_rnn_lstm.ipynb). Exported notebook charts are also collected in [`images/`](images/).
+The full workflow, plots, experiment comparison, confusion matrix, and report-ready summary are in [`week5_rnn_lstm.ipynb`](week5_rnn_lstm.ipynb). Held-out metrics are saved in [`outputs/week5_results.json`](outputs/week5_results.json); final test and ROC figures are in [`images/`](images/).
 
 ## Results
 
@@ -29,10 +29,16 @@ Validation balanced-accuracy selection chose a 32-unit, one-layer LSTM with lear
 | Training-majority baseline accuracy | 84.06% |
 | Selected LSTM accuracy | 74.34% |
 | Difference from baseline | -9.73 percentage points |
+| Macro precision | 0.4939 |
+| Macro recall | 0.4945 |
+| Macro F1 | 0.4938 |
+| ROC-AUC (`True` = met standard) | 0.4873 |
 | Missed-standard recall | 12.93% |
 | Missed-standard F1 | 13.83% |
 
-The selected LSTM did not outperform the majority baseline. The dataset is simulated, no official target-accuracy benchmark was provided, and this course-scale experiment is not a validated operational predictor.
+The selected LSTM did not outperform the majority baseline; its test ROC-AUC is also near chance. The dataset is simulated, no official target-accuracy benchmark was provided, and this course-scale experiment is not a validated operational predictor.
+
+The saved result records seed 42, the validation-selected settings, class-level and macro metrics, and the held-out confusion matrix. Regenerate the machine-readable result and final figures by running all cells in the notebook.
 
 ## Run the notebook
 
